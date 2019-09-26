@@ -59,7 +59,7 @@ class EdifactMixin(object):
         attach = Attachment(
             name=filename,
             type='data',
-            data=unidecode(attachment),
+            data=unidecode(attachment).encode('utf-8'),
             resource=str(self))
         attach.save()
 
