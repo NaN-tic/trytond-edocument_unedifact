@@ -4,7 +4,7 @@
 from setuptools import setup
 import re
 import os
-import ConfigParser
+import configparser
 
 MODULE = 'edocument_unedifact'
 PREFIX = 'nantic'
@@ -25,7 +25,7 @@ def get_require_version(name):
     return require
 
 
-config = ConfigParser.ConfigParser()
+config = configparser.ConfigParser()
 config.readfp(open('tryton.cfg'))
 info = dict(config.items('tryton'))
 for key in ('depends', 'extras_depend', 'xml'):
