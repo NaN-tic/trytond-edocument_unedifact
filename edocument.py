@@ -18,26 +18,26 @@ from io import open
 __all__ = ['EdifactMixin', 'EdiTemplate']
 
 UOMS_EDI_TO_TRYTON = {
-    'KGM': u'kg',
-    'PCE': u'u',
-    'LTR': u'l',
-    'GRM': u'g',
-    'MTR': u'm',
+    'KGM': 'kg',
+    'PCE': 'u',
+    'LTR': 'l',
+    'GRM': 'g',
+    'MTR': 'm',
     }
 
 UOMS_TRYTON_TO_EDI = {
-    'kg': u'KGM',
-    'u': u'PCE',
-    'l': u'LTR',
-    'g': u'GRM',
-    'm': u'MTR',
+    'kg': 'KGM',
+    'u': 'PCE',
+    'l': 'LTR',
+    'g': 'GRM',
+    'm': 'MTR',
     }
 
 CM_TYPES = {
-    'phone': u'TE',
-    'mobile': u'TE',
-    'fax': u'FX',
-    'email': u'EM'
+    'phone': 'TE',
+    'mobile': 'TE',
+    'fax': 'FX',
+    'email': 'EM'
     }
 
 DATE_FORMAT = '%Y%m%d'
@@ -112,7 +112,7 @@ class EdifactMixin(object):
                     errors_path,
                     'error_{}_EDI.log'.format(os.path.splitext(basename)[0]))
                 with open(error_fname, 'w') as fp:
-                    fp.write(u'\n'.join(errors))
+                    fp.write('\n'.join(errors))
         if to_write:
             cls.write(*to_write)
             result = to_write[0]
