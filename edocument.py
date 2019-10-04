@@ -94,11 +94,14 @@ class EdifactMixin(object):
                 continue
             with open(fname, 'r', encoding='utf-8') as fp:
                 input = fp.read()
+
+            record = None
+            errors = None
             try:
                 record, errors = cls.import_edi_input(input,
                     copy.deepcopy(template.lines))
-            except (RuntimeError, AssertionError):
-                continue
+            except (RuntimeError, AssertionError) as e:
+                errors = [e.message]
 
             basename = os.path.basename(fname)
             record_has_detail = (hasattr(record, 'moves')
