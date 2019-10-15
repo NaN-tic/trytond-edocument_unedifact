@@ -15,6 +15,7 @@ import os
 import oyaml as yaml
 import copy
 from io import open
+import logging
 
 __all__ = ['EdifactMixin', 'EdiTemplate']
 
@@ -43,6 +44,9 @@ CM_TYPES = {
 
 DATE_FORMAT = '%Y%m%d'
 KNOWN_EXTENSIONS = ['.txt', '.edi', '.pla']
+
+
+logger = logging.getLogger(__name__)
 
 
 class EdifactMixin(object):
@@ -82,6 +86,11 @@ class EdifactMixin(object):
 
     @classmethod
     def process_edi_inputs(cls, source_path, errors_path, template):
+        for path in (source_path, errors_path):
+            if not os.path.exists(source_path):
+                logger.error('[EDI]\\Path "%s" not exists' % source_path)
+                return
+
         files = [os.path.join(source_path, fp) for fp in
                  os.listdir(source_path) if os.path.isfile(os.path.join(
                      source_path, fp))]
@@ -100,6 +109,8 @@ class EdifactMixin(object):
             try:
                 record, errors = cls.import_edi_input(input,
                     copy.deepcopy(template.lines))
+                logger.info('[EDI]\\Imported "%s" to: %s,%s' % (fname,
+                        record.__name__, record.id))
             except (RuntimeError, AssertionError) as e:
                 errors = [e.message]
 
@@ -112,11 +123,15 @@ class EdifactMixin(object):
                 to_write.extend(([record], record._save_values))
                 files_to_delete.append(fname)
             if errors:
+                logger.error('[EDI]\\Errors in "%s" importation:' % fname)
+                for error in errors:
+                    logger.error('[EDI]\\%s' % error)
                 error_fname = os.path.join(
                     errors_path,
                     'error_{}_EDI.log'.format(os.path.splitext(basename)[0]))
                 with open(error_fname, 'w') as fp:
                     fp.write(u'\n'.join(errors))
+
         if to_write:
             cls.write(*to_write)
             result = to_write[0]
@@ -142,9 +157,12 @@ class EdiTemplate(object):
     def get_content(self):
         content = None
         if self.format == 'yaml':
+            if not os.path.exists(self.path):
+                logger.error('[EDI]\\Path "%s" not exists.' % self.path)
             with open(self.path, encoding='utf-8') as fp:
                 content = yaml.load(fp.read())
         else:
             # TODO: raise a friendly UserError
+            logger.error('[EDI]\\Unsupported template format "%s".' % self.path)
             raise NotImplementedError
         return content
