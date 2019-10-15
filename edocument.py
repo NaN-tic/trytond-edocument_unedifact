@@ -109,6 +109,8 @@ class EdifactMixin(object):
             try:
                 record, errors = cls.import_edi_input(input,
                     copy.deepcopy(template.lines))
+                if record:
+                    record.save()
                 logger.info('[EDI]\\Imported "%s" to: %s,%s' % (fname,
                         record.__name__, record.id))
             except (RuntimeError, AssertionError) as e:
