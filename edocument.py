@@ -101,7 +101,7 @@ class EdifactMixin(object):
             extension = fname[-4:].lower()
             if extension not in KNOWN_EXTENSIONS:
                 continue
-            with open(fname, 'r', encoding='utf-8') as fp:
+            with open(fname, 'r', encoding='ISO-8859-1') as fp:
                 input = fp.read()
 
             record = None
