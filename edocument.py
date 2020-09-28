@@ -53,7 +53,10 @@ class EdifactMixin(object):
 
     @staticmethod
     def get_datetime_obj_from_edi_date(edi_date):
-        if not edi_date or edi_date == '00000000':
+        if not edi_date:
+            return
+        edi_date = edi_date[:8]
+        if edi_date == '00000000':
             return
         return datetime.strptime(edi_date, DATE_FORMAT)
 
