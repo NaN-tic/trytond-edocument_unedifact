@@ -53,7 +53,9 @@ class EdifactMixin(object):
 
     @staticmethod
     def get_datetime_obj_from_edi_date(edi_date):
-        return datetime.strptime(edi_date, DATE_FORMAT) if edi_date else None
+        if not edi_date or edi_date == '00000000':
+            return
+        return datetime.strptime(edi_date, DATE_FORMAT)
 
     def add_attachment(self, attachment, filename=None):
         pool = Pool()
