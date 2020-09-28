@@ -2,12 +2,7 @@
 # The COPYRIGHT file at the top level of this repository contains the full
 # copyright notices and license terms.
 from datetime import datetime
-from edifact.message import Message
 from edifact.control import Characters
-from edifact.serializer import Serializer
-from edifact.utils import (with_segment_check, validate_segment,
-    separate_section, RewindIterator, DO_NOTHING, NO_ERRORS)
-from edifact.errors import (IncorrectValueForField, MissingFieldsError)
 from trytond.pool import Pool
 from trytond.transaction import Transaction
 from unidecode import unidecode
