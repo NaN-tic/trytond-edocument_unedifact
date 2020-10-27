@@ -91,9 +91,10 @@ class EdifactMixin(object):
                 logger.error('[EDI]\\Path "%s" not exists' % source_path)
                 return
 
-        files = [os.path.join(source_path, fp) for fp in
-                 os.listdir(source_path) if os.path.isfile(os.path.join(
-                     source_path, fp))]
+        files = [os.path.join(parent, name)
+            for (parent, subdirs, files) in os.walk(source_path)
+                for name in files + subdirs
+                    if os.path.isfile(os.path.join(parent, name))]
         files_to_delete = []
         to_write = []
         result = []
