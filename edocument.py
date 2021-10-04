@@ -45,6 +45,7 @@ logger = logging.getLogger(__name__)
 
 
 class EdifactMixin(object):
+    __slots__ = ()
 
     @staticmethod
     def get_datetime_obj_from_edi_date(edi_date):
