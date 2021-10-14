@@ -162,7 +162,7 @@ class EdiTemplate(object):
             if not os.path.exists(self.path):
                 logger.error('[EDI]\\Path "%s" not exists.' % self.path)
             with open(self.path, encoding='utf-8') as fp:
-                content = yaml.load(fp.read())
+                content = yaml.load(fp.read(), Loader=yaml.Loader)
         else:
             # TODO: raise a friendly UserError
             logger.error('[EDI]\\Unsupported template format "%s".' % self.path)
