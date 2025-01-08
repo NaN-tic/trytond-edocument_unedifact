@@ -124,7 +124,7 @@ class EdifactMixin(object):
             if record and record_has_detail:
                 with Transaction().set_user(0, set_context=True):
                     record.add_attachment(input, basename)
-                to_write.extend(([record], record._save_values))
+                to_write.extend(([record], record._save_values()))
                 files_to_delete.append(fname)
             if errors:
                 logger.error('[EDI]\\Errors in "%s" importation:' % fname)
