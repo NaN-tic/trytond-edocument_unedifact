@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-# This file is part carrier_shipment_note module for Tryton.
-# The COPYRIGHT file at the top level of this repository contains
-# the full copyright notices and license terms.
+# encoding: utf-8
 
 from setuptools import setup
 import re
@@ -29,13 +27,13 @@ def get_require_version(name):
         major_version, minor_version + 1)
     return require
 
-
 config = ConfigParser()
 config.readfp(open('tryton.cfg'))
 info = dict(config.items('tryton'))
 for key in ('depends', 'extras_depend', 'xml'):
     if key in info:
         info[key] = info[key].strip().splitlines()
+
 version = info.get('version', '0.0.1')
 major_version, minor_version, _ = version.split('.', 2)
 major_version = int(major_version)
@@ -47,25 +45,26 @@ for dep in info.get('depends', []):
         prefix = MODULE2PREFIX.get(dep, 'trytond')
         requires.append(get_require_version('%s_%s' % (prefix, dep)))
 requires.append(get_require_version('trytond'))
-requires.append('edifact')
 
-tests_require = [get_require_version('proteus')]
+tests_require = [
+    get_require_version('proteus'),
+]
+
 series = '%s.%s' % (major_version, minor_version)
 if minor_version % 2:
     branch = 'default'
 else:
     branch = series
 
-dependency_links = [
-    'hg+ssh://hg@bitbucket.org/nantic/python-edifact#egg=edifact',
-    ]
+dependency_links = []
+
 if minor_version % 2:
     # Add development index for testing with proteus
     dependency_links.append('https://trydevpi.tryton.org/')
 
 setup(name='%s_%s' % (PREFIX, MODULE),
     version=version,
-    description='Tryton Edocument Unedifact',
+    description='',
     long_description=read('README'),
     author='NaN·tic',
     author_email='info@nan-tic.com',
@@ -95,11 +94,7 @@ setup(name='%s_%s' % (PREFIX, MODULE),
         'Natural Language :: English',
         'Natural Language :: French',
         'Natural Language :: German',
-        'Natural Language :: Hungarian',
-        'Natural Language :: Italian',
-        'Natural Language :: Portuguese (Brazilian)',
         'Natural Language :: Russian',
-        'Natural Language :: Slovenian',
         'Natural Language :: Spanish',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
